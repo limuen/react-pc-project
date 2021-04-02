@@ -6,10 +6,11 @@ import { productList1, productList2, productList3 } from './mockups'
 import sideImage1 from '../../asstes/images/sider_2019_12-09.png'
 import sideImage2 from '../../asstes/images/sider_2019_02-04.png'
 import sideImage3 from '../../asstes/images/sider_2019_02-04-2.png'
+import { withTranslation, WithTranslation } from 'react-i18next'
 
-
-export class Dashboard extends React.Component {
+class DashboardComponent extends React.Component<WithTranslation> {
     render() {
+        const { t } = this.props
         return (
             <>
                 <Header />
@@ -28,22 +29,22 @@ export class Dashboard extends React.Component {
                         </Col>
                     </Row>
                     <ProductCollection
-                        title={<Typography.Title level={3} type="warning">爆款推荐</Typography.Title>}
+                        title={<Typography.Title level={3} type="warning">{t("dashboard.hot_recommended")}</Typography.Title>}
                         sideImage={sideImage1}
                         products={productList1}
                     />
                     <ProductCollection
-                        title={<Typography.Title level={3} type="danger">新品上市</Typography.Title>}
+                        title={<Typography.Title level={3} type="danger">{t("dashboard.new_arrival")}</Typography.Title>}
                         sideImage={sideImage2}
                         products={productList2}
                     />
                     <ProductCollection
-                        title={<Typography.Title level={3} type="success">国内游推荐</Typography.Title>}
+                        title={<Typography.Title level={3} type="success">{t("dashboard.domestic_travel")}</Typography.Title>}
                         sideImage={sideImage3}
                         products={productList3}
                     />
                     <Cooperative
-                        title={<Typography.Title level={3} type="secondary">合作系统</Typography.Title>}
+                        title={<Typography.Title level={3} type="secondary">{t("dashboard.joint_venture")}</Typography.Title>}
                     />
                 </div>
                 <Footer />
@@ -51,3 +52,5 @@ export class Dashboard extends React.Component {
         )
     }
 }
+
+export const Dashboard = withTranslation()(DashboardComponent)
