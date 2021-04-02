@@ -1,6 +1,9 @@
 import React from 'react'
 import { Image, Typography } from 'antd'
-interface PropsType {
+import { withRouter, RouteComponentProps, Link } from 'react-router-dom'
+
+
+interface PropsType extends RouteComponentProps {
     id: string | number;
     size: "large" | "small";
     imageSrc: string;
@@ -9,12 +12,26 @@ interface PropsType {
 }
 
 
-export const ProductImage: React.FC<PropsType> = (props) => {
-    const { id, size, imageSrc, price, title } = props
+const ProductImageComponent: React.FC<PropsType> = (props) => {
+    const { id, size, imageSrc, price, title, history, location, match } = props
+    console.log(history, location, match)
     return (
-        <>
+        // push
+        // <div onClick={() => history.push(`detail/${id}`)}>
+        //     {size === 'large' ? (
+        //         <Image src={imageSrc} height={285} width={527} />
+        //     ) : (
+        //         <Image src={imageSrc} height={120} width={240} />
+        //     )}
+        //     <div>
+        //         <Typography.Text type="secondary">{title.slice(0, 25)}</Typography.Text>
+        //         <Typography.Text type="danger" strong>¥ {price} 起</Typography.Text>
+        //     </div>
+        // </div>
+        // link
+        <Link to={`detail/${id}`}>
             {size === 'large' ? (
-                <Image src={imageSrc} height={285} width={490} />
+                <Image src={imageSrc} height={285} width={527} />
             ) : (
                 <Image src={imageSrc} height={120} width={240} />
             )}
@@ -22,6 +39,9 @@ export const ProductImage: React.FC<PropsType> = (props) => {
                 <Typography.Text type="secondary">{title.slice(0, 25)}</Typography.Text>
                 <Typography.Text type="danger" strong>¥ {price} 起</Typography.Text>
             </div>
-        </>
+        </Link>
     )
 }
+
+
+export const ProductImage = withRouter(ProductImageComponent)
