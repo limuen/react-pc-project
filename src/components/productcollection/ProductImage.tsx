@@ -14,7 +14,6 @@ interface PropsType extends RouteComponentProps {
 
 const ProductImageComponent: React.FC<PropsType> = (props) => {
     const { id, size, imageSrc, price, title, history, location, match } = props
-    console.log(history, location, match)
     return (
         // push
         // <div onClick={() => history.push(`detail/${id}`)}>

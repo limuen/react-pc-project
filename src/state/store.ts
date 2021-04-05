@@ -1,7 +1,14 @@
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import languageReducer from './language/languageReducer';
-const store = createStore(languageReducer);
+import recommendReducer from './recommend/recommendReducer';
 
-export type RoutState = ReturnType<typeof store.getState>
+const rootReducer = combineReducers({
+  languageReducer,
+  recommendReducer,
+});
+
+const store = createStore(rootReducer);
+
+export type RoutState = ReturnType<typeof store.getState>;
 
 export default store;

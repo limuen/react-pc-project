@@ -16,13 +16,12 @@ export const Header: React.FC = () => {
     const params = useParams() // 路径匹配的数据
     const match = useRouteMatch() // url的参数
     // 映射
-    const language = useSelector((state) => state.language)
-    const languageList = useSelector((state) => state.languageList)
+    const language = useSelector((state) => state.languageReducer.language)
+    const languageList = useSelector((state) => state.languageReducer.languageList)
     const dispatch = useDispatch()
     // const dispatch = useDispatch<Dispatch<LanguageActionTypes>>()
 
     const { t } = useTranslation()
-
     const handleMenuClick = (e) => {
         console.log(e.key, 'e')
         if (e.key === 'new') {
@@ -33,7 +32,8 @@ export const Header: React.FC = () => {
 
     }
     return (
-        <div className={styles['App-header']}>
+
+        < div className={styles['App-header']} >
             <div className={styles['top-header']}>
                 <div className={styles.inner}>
                     <Typography.Text>{t("header.slogan")}</Typography.Text>
@@ -56,10 +56,6 @@ export const Header: React.FC = () => {
                     <Button.Group className={styles['button-group']}>
                         <Button onClick={() => history.push('register')}>{t("header.register")}</Button>
                         <Button onClick={() => history.push('login')}>{t("header.signin")}</Button>
-                    </Button.Group>
-                    <Button.Group className={styles['button-group']}>
-                        <Button onClick={() => history.push('register')}>注册</Button>
-                        <Button onClick={() => history.push('login')}>登陆</Button>
                     </Button.Group>
                 </div>
             </div>
@@ -91,6 +87,6 @@ export const Header: React.FC = () => {
                 <Menu.Item key={15}>{t("header.outdoor")}</Menu.Item>
                 <Menu.Item key={16}>{t("header.insurance")}</Menu.Item>
             </Menu>
-        </div>
+        </div >
     )
 }
