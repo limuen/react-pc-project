@@ -10,7 +10,7 @@ import { withTranslation, WithTranslation } from 'react-i18next'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import { RoutState } from '../../state/store'
-import { feachRecommendActionCreator, feachRecommendSuccessActionCreator, feachRecommendFailActionCreator } from '../../state/recommend/recommendActions'
+import { getDataListActionCreator } from '../../state/recommend/recommendActions'
 
 const mapStateToProps = (state: RoutState) => {
     return {
@@ -23,14 +23,8 @@ const mapStateToProps = (state: RoutState) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchStart: () => {
-            dispatch(feachRecommendActionCreator())
-        },
-        fetchSuccess: (data) => {
-            dispatch(feachRecommendSuccessActionCreator(data))
-        },
-        fetchFail: (error) => {
-            dispatch(feachRecommendFailActionCreator(error))
+        getList: () => {
+            dispatch(getDataListActionCreator())
         }
     }
 }
@@ -41,38 +35,20 @@ type PropsType = WithTranslation & ReturnType<typeof mapStateToProps> & ReturnTy
 
 class DashboardComponent extends React.Component<PropsType> {
 
-    async componentDidMount() {
-        this.props.fetchStart()
-        try {
-            const { data } = await axios.get("http://123.56.149.216:8080/api/productCollections")
-            this.props.fetchSuccess(data)
-        } catch (error) {
-            this.props.fetchFail(error.message)
-        }
+    componentDidMount() {
+        // this.props.fetchStart()
+        // try {
+        //     const { data } = await axios.get("http://123.56.149.216:8080/api/productCollections")
+        //     this.props.fetchSuccess(data)
+        // } catch (error) {
+        //     this.props.fetchFail(error.message)
+        // }
+        this.props.getList()
     }
 
 
     render() {
         const { t, loading, error, productList } = this.props
-        if (loading) {
-            return (
-                <Spin
-                    size="large"
-                    style={{
-                        marginTop: 200,
-                        marginBottom: 200,
-                        marginLeft: "auto",
-                        marginRight: "autp",
-                        width: "100%"
-                    }}
-                />
-            )
-        }
-
-        if (error) {
-            return <div>{error}</div>
-        }
-
         return (
             <>
                 <Header />
@@ -90,21 +66,33 @@ class DashboardComponent extends React.Component<PropsType> {
                             </div>
                         </Col>
                     </Row>
-                    <ProductCollection
-                        title={<Typography.Title level={3} type="warning">{t("dashboard.hot_recommended")}</Typography.Title>}
-                        sideImage={sideImage1}
-                        products={productList[0].touristRoutes}
-                    />
-                    <ProductCollection
-                        title={<Typography.Title level={3} type="danger">{t("dashboard.new_arrival")}</Typography.Title>}
-                        sideImage={sideImage2}
-                        products={productList[1].touristRoutes}
-                    />
-                    <ProductCollection
-                        title={<Typography.Title level={3} type="success">{t("dashboard.domestic_travel")}</Typography.Title>}
-                        sideImage={sideImage3}
-                        products={productList[2].touristRoutes}
-                    />
+                    {loading ?
+                        <Spin
+                            size="large"
+                            style={{
+                                marginTop: 200,
+                                marginBottom: 200,
+                                marginLeft: "auto",
+                                marginRight: "auto",
+                                width: "100%"
+                            }} /> :
+                        <>
+                            <ProductCollection
+                                title={<Typography.Title level={3} type="warning">{t("dashboard.hot_recommended")}</Typography.Title>}
+                                sideImage={sideImage1}
+                                products={productList[0].touristRoutes}
+                            />
+                            <ProductCollection
+                                title={<Typography.Title level={3} type="danger">{t("dashboard.new_arrival")}</Typography.Title>}
+                                sideImage={sideImage2}
+                                products={productList[1].touristRoutes}
+                            />
+                            <ProductCollection
+                                title={<Typography.Title level={3} type="success">{t("dashboard.domestic_travel")}</Typography.Title>}
+                                sideImage={sideImage3}
+                                products={productList[2].touristRoutes}
+                            />
+                        </>}
                     <Cooperative
                         title={<Typography.Title level={3} type="secondary">{t("dashboard.joint_venture")}</Typography.Title>}
                     />

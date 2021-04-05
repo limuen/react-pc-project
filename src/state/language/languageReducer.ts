@@ -18,7 +18,7 @@ const defaustState: LanguageState = {
 };
 
 export default (state = defaustState, action: LanguageActionTypes) => {
-  console.log(state, action);
+  // console.log(state, action);
   switch (action.type) {
     case CHANGE_LANGUAGE:
       i18n.changeLanguage(action.payload);

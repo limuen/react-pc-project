@@ -1,3 +1,6 @@
+import { ThunkAction } from 'redux-thunk';
+import { RoutState } from '../store';
+import axios from 'axios';
 export const FETCH_RECOMMEND_START = 'FETCH_RECOMMEND_START'; // 推荐信息api
 export const FETCH_RECOMMEND_START_SUCCESS = 'FETCH_RECOMMEND_START_SUCCESS'; // api调用成功
 export const FETCH_RECOMMEND_START_FAIL = 'FETCH_RECOMMEND_START_FAIL'; // api调用失败
@@ -43,4 +46,21 @@ export const feachRecommendFailActionCreator = (
     type: FETCH_RECOMMEND_START_FAIL,
     payload: error,
   };
+};
+
+export const getDataListActionCreator = (): ThunkAction<
+  void,
+  RoutState,
+  unknown,
+  RecommendAction
+> => async (dispatch, getState) => {
+  dispatch(feachRecommendActionCreator());
+  try {
+    const { data } = await axios.get(
+      'http://123.56.149.216:8080/api/productCollections'
+    );
+    dispatch(feachRecommendSuccessActionCreator(data));
+  } catch (error) {
+    dispatch(feachRecommendFailActionCreator(error.message));
+  }
 };
