@@ -3,7 +3,9 @@ import styles from './SideMenu.module.css'
 import { sideMenuList } from './mockup'
 import { Menu } from 'antd'
 import { GifOutlined } from '@ant-design/icons'
+import { useTranslation } from 'react-i18next'
 export const SideMenu: React.FC = () => {
+    const t = useTranslation()
     return (
         <Menu mode={'vertical'} className={styles['side-menu']}>
             {
