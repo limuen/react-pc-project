@@ -2,7 +2,6 @@ import React from 'react'
 import styles from './ProductIntro.module.css'
 import { Typography, Carousel, Image, Table, Rate } from 'antd'
 import { ColumnsType } from 'antd/es/table'
-import { StringMap } from 'i18next'
 interface PropsType {
     title: string;
     shorDesciption: string;

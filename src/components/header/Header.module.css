@@ -30,6 +30,7 @@
     width: 88%;
     margin-left: auto;
     margin-right: auto;
+    cursor: pointer;
   }
   
   .App-logo {

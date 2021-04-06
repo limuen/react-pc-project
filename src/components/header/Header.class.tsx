@@ -16,8 +16,8 @@ import { Dispatch } from 'redux'
 // redux store 映射
 const mapStateToProps = (state: RoutState) => {
     return {
-        language: state.languageReducer.language,
-        languageList: state.languageReducer.languageList,
+        language: state.language.language,
+        languageList: state.language.languageList,
     }
 }
 
@@ -46,17 +46,16 @@ class HeaderComponent extends React.Component<PropsType>{
     //     // 获取store方法
     //     const storeState = store.getState()
     //     this.setState({
-    //    language: storestate.languageReducer.language,
-    //    languageList: storestate.languageReducer.languageList
+    //    language: storestate.language.language,
+    //    languageList: storestate.language.languageList
     //})
     //     store.subscribe(this.handleStoreChange);
     // }
 
-    handleStoreChange = () => {
-        const storestate = store.getState()
+    handleStoreChange = (state: RoutState) => {
         this.setState({
-            language: storestate.languageReducer.language,
-            languageList: storestate.languageReducer.languageList
+            language: state.language.language,
+            languageList: state.language.languageList
         })
     }
 

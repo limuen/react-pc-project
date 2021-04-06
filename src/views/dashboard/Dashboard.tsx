@@ -11,12 +11,12 @@ import axios from 'axios'
 import { connect } from 'react-redux'
 import { RoutState } from '../../state/store'
 import { getDataListActionCreator } from '../../state/recommend/recommendActions'
-
+import { MainLayout } from '../../layouts/mainLayout'
 const mapStateToProps = (state: RoutState) => {
     return {
-        loading: state.recommendReducer.loading,
-        error: state.recommendReducer.error,
-        productList: state.recommendReducer.productList
+        loading: state.recommend.loading,
+        error: state.recommend.error,
+        productList: state.recommend.productList
     }
 }
 
@@ -50,55 +50,51 @@ class DashboardComponent extends React.Component<PropsType> {
     render() {
         const { t, loading, error, productList } = this.props
         return (
-            <>
-                <Header />
-                {/* 页面内容 content */}
-                <div className={styles['page-content']}>
-                    <Row style={{ marginTop: 20 }}>
-                        <Col span={6}>
-                            <div>
-                                <SideMenu />
-                            </div>
-                        </Col>
-                        <Col span={18}>
-                            <div>
-                                <Carousel />
-                            </div>
-                        </Col>
-                    </Row>
-                    {loading ?
-                        <Spin
-                            size="large"
-                            style={{
-                                marginTop: 200,
-                                marginBottom: 200,
-                                marginLeft: "auto",
-                                marginRight: "auto",
-                                width: "100%"
-                            }} /> :
-                        <>
-                            <ProductCollection
-                                title={<Typography.Title level={3} type="warning">{t("dashboard.hot_recommended")}</Typography.Title>}
-                                sideImage={sideImage1}
-                                products={productList[0].touristRoutes}
-                            />
-                            <ProductCollection
-                                title={<Typography.Title level={3} type="danger">{t("dashboard.new_arrival")}</Typography.Title>}
-                                sideImage={sideImage2}
-                                products={productList[1].touristRoutes}
-                            />
-                            <ProductCollection
-                                title={<Typography.Title level={3} type="success">{t("dashboard.domestic_travel")}</Typography.Title>}
-                                sideImage={sideImage3}
-                                products={productList[2].touristRoutes}
-                            />
-                        </>}
-                    <Cooperative
-                        title={<Typography.Title level={3} type="secondary">{t("dashboard.joint_venture")}</Typography.Title>}
-                    />
-                </div>
-                <Footer />
-            </>
+            <MainLayout>
+                <Row style={{ marginTop: 20 }}>
+                    <Col span={6}>
+                        <div>
+                            <SideMenu />
+                        </div>
+                    </Col>
+                    <Col span={18}>
+                        <div>
+                            <Carousel />
+                        </div>
+                    </Col>
+                </Row>
+                {loading ?
+                    <Spin
+                        size="large"
+                        style={{
+                            marginTop: 200,
+                            marginBottom: 200,
+                            marginLeft: "auto",
+                            marginRight: "auto",
+                            width: "100%"
+                        }} />
+                    :
+                    <>
+                        <ProductCollection
+                            title={<Typography.Title level={3} type="warning">{t("dashboard.hot_recommended")}</Typography.Title>}
+                            sideImage={sideImage1}
+                            products={productList[0].touristRoutes}
+                        />
+                        <ProductCollection
+                            title={<Typography.Title level={3} type="danger">{t("dashboard.new_arrival")}</Typography.Title>}
+                            sideImage={sideImage2}
+                            products={productList[1].touristRoutes}
+                        />
+                        <ProductCollection
+                            title={<Typography.Title level={3} type="success">{t("dashboard.domestic_travel")}</Typography.Title>}
+                            sideImage={sideImage3}
+                            products={productList[2].touristRoutes}
+                        />
+                    </>}
+                <Cooperative
+                    title={<Typography.Title level={3} type="secondary">{t("dashboard.joint_venture")}</Typography.Title>}
+                />
+            </MainLayout>
         )
     }
 }

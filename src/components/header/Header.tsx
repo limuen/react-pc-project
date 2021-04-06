@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import logo from '../../asstes/logo.svg'
 import styles from './Header.module.css'
 import { Layout, Typography, Input, Menu, Button, Dropdown } from 'antd';
@@ -10,16 +10,35 @@ import { Dispatch } from 'redux'
 
 import { LanguageActionTypes, changeLanguageActionCreator, addLanguageActionCreator } from '../../state/language/languagesActions'
 import { useTranslation } from 'react-i18next'
+import { UserSlice } from '../../state/user/slice'
+import jwt_decode, { JwtPayload as DefaultJwtPayload } from 'jwt-decode'
+
+interface JwtPayload extends DefaultJwtPayload {
+    username: string
+}
+
+
 export const Header: React.FC = () => {
     const history = useHistory() // 导航操作
     const location = useLocation() // 当前路径信息
     const params = useParams() // 路径匹配的数据
     const match = useRouteMatch() // url的参数
     // 映射
-    const language = useSelector((state) => state.languageReducer.language)
-    const languageList = useSelector((state) => state.languageReducer.languageList)
+    const language = useSelector((state) => state.language.language)
+    const languageList = useSelector((state) => state.language.languageList)
+    const jwt = useSelector(state => state.user.token)
     const dispatch = useDispatch()
     // const dispatch = useDispatch<Dispatch<LanguageActionTypes>>()
+
+    const [username, setUsername] = useState<string>("")
+
+    useEffect(() => {
+        if (jwt) {
+            const token = jwt_decode<JwtPayload>(jwt)
+            setUsername(token.username)
+        }
+    }, [jwt])
+
 
     const { t } = useTranslation()
     const handleMenuClick = (e) => {
@@ -29,10 +48,14 @@ export const Header: React.FC = () => {
         } else {
             dispatch(changeLanguageActionCreator(e.key))
         }
-
     }
-    return (
 
+    const onLogout = () => {
+        dispatch(UserSlice.actions.logOut())
+        history.push('/')
+    }
+
+    return (
         < div className={styles['App-header']} >
             <div className={styles['top-header']}>
                 <div className={styles.inner}>
@@ -53,10 +76,23 @@ export const Header: React.FC = () => {
                     >
                         {language === 'zh' ? '中文' : 'English'}
                     </Dropdown.Button>
-                    <Button.Group className={styles['button-group']}>
-                        <Button onClick={() => history.push('register')}>{t("header.register")}</Button>
-                        <Button onClick={() => history.push('login')}>{t("header.signin")}</Button>
-                    </Button.Group>
+                    {
+                        jwt ? (
+                            <Button.Group className={styles['button-group']}>
+                                <Typography.Text>
+                                    {t("header.welcome")}
+                                    <Typography.Text strong>{username}</Typography.Text>
+                                </Typography.Text>
+                                <Button>{t("header.shoppingCart")}</Button>
+                                <Button onClick={onLogout}>{t("header.signout")}</Button>
+                            </Button.Group>
+                        ) : (
+                            <Button.Group className={styles['button-group']}>
+                                <Button onClick={() => history.push('/register')}>{t("header.register")}</Button>
+                                <Button onClick={() => history.push('/login')}>{t("header.signin")}</Button>
+                            </Button.Group>
+                        )
+                    }
                 </div>
             </div>
             <Layout.Header className={styles['main-header']}>
@@ -67,6 +103,7 @@ export const Header: React.FC = () => {
                 <Input.Search
                     placeholder="请输入你想要去哪儿的玩意儿"
                     className={styles['search-input']}
+                    onSearch={(keywords) => history.push(`/search/${keywords}`)}
                 ></Input.Search>
             </Layout.Header>
             <Menu mode={"horizontal"} className={styles['main-muen']}>

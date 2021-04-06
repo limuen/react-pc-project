@@ -1,0 +1,9 @@
+.register-form {
+    width: 450px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.register-form :global(.ant-form-item-explain-error) {
+    text-align: left !important;
+}

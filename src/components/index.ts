@@ -5,3 +5,6 @@ export * from './carousel';
 export * from './productcollection';
 export * from './cooperative';
 export * from './productIntro';
+export * from './productComments';
+export * from './filter';
+export * from './productList';
