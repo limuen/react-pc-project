@@ -5,7 +5,9 @@ import { actionLog } from './middlewares/actionLog';
 import thunk from 'redux-thunk';
 import { productDetailSlice } from './productDetail/slice';
 import { productSearchSlice } from './productSearch/slice';
+import { shoppingCartSlice } from './shoppingCart/slice';
 import { UserSlice } from './user/slice';
+import { OrderSlice } from './order/slice';
 // rtk异步
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 // 本地存储持久化
@@ -14,7 +16,7 @@ import storage from 'redux-persist/lib/storage';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['user'],
+  whitelist: ['user', 'shoppingCart'],
 };
 
 const rootReducer = combineReducers({
@@ -23,6 +25,8 @@ const rootReducer = combineReducers({
   productDetail: productDetailSlice.reducer,
   productSearch: productSearchSlice.reducer,
   user: UserSlice.reducer,
+  shoppingCart: shoppingCartSlice.reducer,
+  order: OrderSlice.reducer,
 });
 
 // 持久化本地存储

@@ -27,6 +27,8 @@ export const Header: React.FC = () => {
     const language = useSelector((state) => state.language.language)
     const languageList = useSelector((state) => state.language.languageList)
     const jwt = useSelector(state => state.user.token)
+    const shoppingCartItems = useSelector(state => state.shoppingCart.items)
+    const shoppingCartLoading = useSelector(state => state.shoppingCart.loading)
     const dispatch = useDispatch()
     // const dispatch = useDispatch<Dispatch<LanguageActionTypes>>()
 
@@ -83,7 +85,7 @@ export const Header: React.FC = () => {
                                     {t("header.welcome")}
                                     <Typography.Text strong>{username}</Typography.Text>
                                 </Typography.Text>
-                                <Button>{t("header.shoppingCart")}</Button>
+                                <Button onClick={() => history.push('/shoppingCart')} loading={shoppingCartLoading}>{t("header.shoppingCart")}({shoppingCartItems.length})</Button>
                                 <Button onClick={onLogout}>{t("header.signout")}</Button>
                             </Button.Group>
                         ) : (

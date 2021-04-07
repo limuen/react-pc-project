@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { Spin, Row, Col, DatePicker, Divider, Typography, Anchor, Menu } from 'antd'
+import { Spin, Row, Col, DatePicker, Divider, Typography, Anchor, Menu, Button, } from 'antd'
 import { RouteComponentProps, useParams } from 'react-router-dom'
 import axios from 'axios'
 import { Header, Footer, ProductIntro, ProductComments } from '../../components/index'
 import { commentMockData } from './mockup'
 import styles from './Detail.module.css'
 import { productDetailSlice, getProductDetail } from "../../state/productDetail/slice"
+// hooks下 访问 redux的数据
 import { useSelector } from '../../state/hooks'
 import { useDispatch } from 'react-redux'
 import { MainLayout } from '../../layouts/mainLayout'
+import { ShoppingCartOutlined } from '@ant-design/icons'
+import { addShoppingCartItem } from '../../state/shoppingCart/slice'
+
+
 interface MatchParams {
     touristRouteId: string
 }
@@ -22,11 +27,15 @@ export const Detail: React.FC<RouteComponentProps<MatchParams>> = (props) => {
     // const [product, setProduct] = useState<any>(null)
     // const [errror, setError] = useState<string | null>(null)
 
-    // RTK写法 
+    // hooks下访问redux的数据（createAsyncThunk
     const loading = useSelector(state => state.productDetail.loading)
     const error = useSelector(state => state.productDetail.error)
     const product = useSelector(state => state.productDetail.data)
     const dispatch = useDispatch()
+    // 参数为string ｜ null 直接把它as string
+    const jwt = useSelector(state => state.user.token) as string
+    const shoppingCartLoading = useSelector(state => state.shoppingCart.loading)
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -81,6 +90,19 @@ export const Detail: React.FC<RouteComponentProps<MatchParams>> = (props) => {
                                     />
                                 </Col>
                                 <Col span={11}>
+                                    <Button
+                                        style={{ marginTop: 50, marginBottom: 30, display: 'block' }}
+                                        type="primary"
+                                        danger
+                                        loading={shoppingCartLoading}
+                                        onClick={() => {
+                                            dispatch(addShoppingCartItem({ jwt, touristRouteId: product.id }))
+                                        }}
+                                    >
+                                        <ShoppingCartOutlined />
+                                        加入购物车
+                                    </Button>
+
                                     <RangePicker
                                         open
                                         style={{

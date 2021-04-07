@@ -1,5 +1,14 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { notification } from 'antd';
+
+const openNotificationWithIcon = (type, error) => {
+  notification[type]({
+    message: error,
+    description: '登陆失败',
+  });
+};
+
 interface ProductSearchState {
   loading: boolean;
   error: string | null;
@@ -25,15 +34,19 @@ export const searchProduct = createAsyncThunk(
     },
     thunkAPI
   ) => {
-    let url = `http://123.56.149.216:8080/api/touristRoutes?pageNumber=${paramaters.pageNumber}&pageSize=${paramaters.pageSize}`;
-    if (paramaters.keywords) {
-      url += `&keyword=${paramaters.keywords}`;
+    try {
+      let url = `http://123.56.149.216:8080/api/touristRoutes?pageNumber=${paramaters.pageNumber}&pageSize=${paramaters.pageSize}`;
+      if (paramaters.keywords) {
+        url += `&keyword=${paramaters.keywords}`;
+      }
+      const res = await axios.get(url);
+      return {
+        data: res.data,
+        pagination: JSON.parse(res.headers['x-pagination']),
+      };
+    } catch (error) {
+      openNotificationWithIcon('error', error);
     }
-    const res = await axios.get(url);
-    return {
-      data: res.data,
-      pagination: JSON.parse(res.headers['x-pagination']),
-    };
   }
 );
 
