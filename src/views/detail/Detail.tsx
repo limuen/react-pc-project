@@ -6,7 +6,7 @@ import { Header, Footer, ProductIntro, ProductComments } from '../../components/
 import { commentMockData } from './mockup'
 import styles from './Detail.module.css'
 import { productDetailSlice, getProductDetail } from "../../state/productDetail/slice"
-// hooks下 访问 redux的数据
+
 import { useSelector } from '../../state/hooks'
 import { useDispatch } from 'react-redux'
 import { MainLayout } from '../../layouts/mainLayout'
